@@ -1,0 +1,16 @@
+body {
+	margin:auto;
+	padding: 10px 5%;
+}
+
+#log {
+	height:400px;
+}
+#message {
+	width:100%;
+	line-height:20px;
+}
+
+.active {
+
+}
