@@ -45,7 +45,9 @@ $(document).ready(function () {
 	//Log any messages sent from server
 	Server.bind('message', function( payload ) {
         var obj = JSON.parse(payload);
-        
+        if(obj.command == "HELO") {
+            Server.send( "message", '{"command": "ANN", "message":{"id": '+obj.message.id+', "username":"BroodjeKaasPresentatie","pubkey":""}}' );
+        }
 	});
 
 	Server.connect();

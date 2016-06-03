@@ -10,6 +10,6 @@ You'll need IE10+, FF7+ or Chrome 14+ to run this example.
 wsOnOpen -> stuur id naar client + encryptiestatus					HELO -> {"command":"HELO","message":{"id":2,"encryptStatus":0,"userList":[]}}
 wsOnClose -> stuur naar andere clients dat user weg is				QUIT -> {"command":"QUIT","message":{"id":1}}
 wsOnMessage -> 
-	Broadcast: gebruikersnaam, id, pub key							ANN -> {'command': 'ANN', 'message':{'id': 1, 'username':'BroodjeKaasPresentatie','pubKey':''}}
+	Broadcast: gebruikersnaam, id, pub key							ANN -> {"command": "ANN", "message":{"id": 1, "username":"BroodjeKaasPresentatie","pubkey":""}}
 	Broadcast: StartEncryption + pas encryptiestatus server aan		LOCK
 	Unicast: Stuur bericht naar client X en naar presentatie		MSG
