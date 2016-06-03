@@ -11,7 +11,7 @@ $presClient = 0;
 
 // when a client sends data to the server
 function wsOnMessage($clientID, $message, $messageLength, $binary) {
-	global $Server, $encryptStatus;
+	global $Server, $encryptStatus, $presClient, $users;
 	$ip = long2ip( $Server->wsClients[$clientID][6] );
 
 	// check if message length is 0
@@ -22,16 +22,17 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
 	$object = json_decode($message);
 	if($object->command == "ANN") {
-		if($object->message->userName == "BroodjeKaasPresentatie") {
-			$presClient = $CliendID;
+		if($object->message->username == "BroodjeKaasPresentatie") {
+			$presClient = $clientID;
 		} else {
-			$users[$ClientID] = $object->message->userName;
-		}
-		foreach ( $Server->wsClients as $id => $client ) {
-			if ( $id != $clientID ) {
-				$Server->wsSend($id, $message);
+			$users[$clientID] = $object->message->username;
+			foreach ( $Server->wsClients as $id => $client ) {
+				if ( $id != $clientID) {
+					$Server->wsSend($id, $message);
+				}
 			}
 		}
+		
 	} elseif($object->command == "LOCK") {
 		$encryptStatus = $object->message->encryptStatus;
 
@@ -45,6 +46,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 		$Server->wsSend($object->reciever, $message);
 		$Server->wsSend($presClient, $message);
 	}
+	$Server->log( $message );
 }
 
 // when a client connects
