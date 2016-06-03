@@ -7,9 +7,9 @@ Then visit index.html in your browser (You may need to set up a webserver to ser
 
 You'll need IE10+, FF7+ or Chrome 14+ to run this example.
 
-wsOnOpen -> stuur id naar client + encryptiestatus					HELO
+wsOnOpen -> stuur id naar client + encryptiestatus					HELO -> {'command': 'ANN', 'message':{'id': 1, 'username':'BroodjeKaasPresentatie','pubKey':''}}
 wsOnClose -> stuur naar andere clients dat user weg is				QUIT
 wsOnMessage -> 
-	Broadcast: gebruikersnaam, id, pub key							ANN
+	Broadcast: gebruikersnaam, id, pub key							ANN 
 	Broadcast: StartEncryption + pas encryptiestatus server aan		LOCK
 	Unicast: Stuur bericht naar client X en naar presentatie		MSG

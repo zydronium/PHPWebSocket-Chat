@@ -39,4 +39,14 @@ $(document).ready(function () {
 		$("#daily").hide();
 		$("#question").show();
 	})
+    
+	Server = new FancyWebSocket('ws://145.89.96.75:9300');
+    
+	//Log any messages sent from server
+	Server.bind('message', function( payload ) {
+        var obj = JSON.parse(payload);
+        
+	});
+
+	Server.connect();
 });
