@@ -45,7 +45,14 @@ $(document).ready(function () {
 	//Log any messages sent from server
 	Server.bind('message', function( payload ) {
         var obj = JSON.parse(payload);
-        
+        if(obj.command == "HELO") {
+            Server.send( "message", '{"command": "ANN", "message":{"id": '+obj.message.id+', "username":"BroodjeKaasPresentatie","pubkey":""}}' );
+        }else if(obj.command == "MSG") {
+            var message = "Reciever: "+obj.reciever+" - Message: "+obj.message.text;
+            $(".demoGroup").html = message + "<br />" + $(".demoGroup").html;
+        }
+        alert(payload);
+        $(".demoGroup").html = payload + "<br />" + $(".demoGroup").html;
 	});
 
 	Server.connect();
