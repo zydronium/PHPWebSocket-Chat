@@ -1,0 +1,1 @@
+- cover entire screen during connect, on disconnect block page.

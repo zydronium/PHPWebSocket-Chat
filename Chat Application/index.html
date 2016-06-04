@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Chat</title>
+
+		<!--Import Google Icon Font-->
+		<!-- <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+		<link rel="stylesheet" type="text/css" href="client.css">
+
+		<script type="text/javascript" src="jquery.min.js"></script>
+      	<script type="text/javascript" src="js/materialize.min.js"></script>
+		<!-- <script src="jquery.min.js"></script> -->
+		<script src="fancywebsocket.js"></script>
+		<script src="client.js"></script>
+	</head>
+
+	<body>
+		<!-- Modal Structure -->
+		<div id="modal1" class="modal modal-fixed-footer">
+			<div class="modal-content">
+				<h4>Login</h4>
+				<p>Please fill in your username:</p>
+				<div class="input-field col s12">
+					<input type="text" id="username-form">
+					<label for="disabled">Name</label>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#!" id="modal-close" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+			</div>
+		</div>
+		<div class="row">
+			<div id='body' class="col s12 m8">
+				<h4>Chat</h4>
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title"><span class="left" id="reciever">Reviever</span><span class="right" id="username">User</span><span class="right">You:&nbsp;</span></span>
+						<div class="row">
+						    <form class="col s12">
+							    <div class="row">
+									<div class="input-field col s12">
+										<textarea id='log' name='log' readonly='readonly' class="materialize-textarea"></textarea>
+									</div>
+								</div>
+							</form>
+							<div class="input-field col s12">
+								<input type="text" id='message' name='message' class="validate">
+								<label for="disabled">Message</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id='userlist' class="col s12 m4">
+				<h4>Userlist</h4>
+				<div class="collection">
+					<!-- <a href="#!" class="collection-item">Alan<span class="new badge">0</span></a> -->
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
