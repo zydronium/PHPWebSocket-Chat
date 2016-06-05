@@ -11,5 +11,5 @@ wsOnOpen -> stuur id naar client + encryptiestatus					HELO -> {"command":"HELO"
 wsOnClose -> stuur naar andere clients dat user weg is				QUIT -> {"command":"QUIT","message":{"id":1}}
 wsOnMessage -> 
 	Broadcast: gebruikersnaam, id, pub key							ANN -> {"command": "ANN", "message":{"id": 1, "username":"BroodjeKaasPresentatie","pubkey":""}}
-	Broadcast: StartEncryption + pas encryptiestatus server aan		LOCK
+	Broadcast: StartEncryption + pas encryptiestatus server aan		LOCK -> {"command":"LOCK","message":{"encryptStatus": 1}}
 	Unicast: Stuur bericht naar client X en naar presentatie		MSG

@@ -23,7 +23,7 @@ $(document).ready(function () {
 	$("#security").click(function (event){
 		$("#security").hide();
 		$("#end").show();
-        
+        Server.send( "message", '{"command":"LOCK","message":{"encryptStatus": 1}}' );        
 	});
 
 	$("#end").click(function (event){
