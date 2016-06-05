@@ -11,12 +11,13 @@ function updateLog() {
 	$log = $('#log');
 	//Add text to log
 	$log.val(session.userlist[session.openchat].chat);
+	$log.trigger('autoresize');
 	//Autoscroll
 	$log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
 }
 
 function log( text ) {
-	session.userlist[session.openchat].chat+=("\n"+text);
+	session.userlist[session.openchat].chat+=(text+"\n");
 	updateLog()
 }
 
@@ -43,6 +44,7 @@ function connect() {
 			sendMessage( session.username + ': ' + this.value, session.openchat );
 
 			$(this).val('');
+			$(this).trigger('autoresize');
 		}
 	});
 
@@ -77,6 +79,9 @@ function connect() {
 		    case "QUIT":
 		        delete session.userlist[obj.message.id];
 		        $('#userlist .collection #'+obj.message.id).remove();
+				session.openchat = 999;
+				$('#message').attr("disabled", true);
+				$('#log').val('');
 		        break;
 		    case "ANN":
 		    	session.userlist[obj.message.id] = {};
@@ -89,7 +94,7 @@ function connect() {
 		    case "MSG":
 				console.log(obj.message.text);
 				console.log(session.userlist[obj.sender].chat);
-				session.userlist[obj.sender].chat+=("\n"+obj.message.text);
+				session.userlist[obj.sender].chat+=(obj.message.text+"\n");
 				console.log(session.userlist[obj.sender].chat);
 				console.log("sender = " + obj.sender);
 				if(session.openchat != obj.sender) {
