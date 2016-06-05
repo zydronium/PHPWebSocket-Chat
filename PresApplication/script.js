@@ -41,7 +41,7 @@ $(document).ready(function () {
 		$("#question").show();
 	})
     
-	Server = new FancyWebSocket('ws://vivio.jelleluteijn.nl:9300');
+	Server = new FancyWebSocket('ws://chat.123apps.net:9300');
     
 	//Log any messages sent from server
 	Server.bind('message', function( payload ) {
