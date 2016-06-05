@@ -63,3 +63,14 @@ ul.list{
 #end img{
 	margin-top: 20%;
 }
+.tooltip {
+    width: 200px;
+    height: 240px;
+    position: fixed;
+    top:auto;
+    bottom:0px;
+    right:auto;
+    left:0px;
+    background-color:white;
+    font-size: 125%;
+}
