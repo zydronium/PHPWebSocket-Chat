@@ -23,6 +23,7 @@ $(document).ready(function () {
 	$("#security").click(function (event){
 		$("#security").hide();
 		$("#end").show();
+        
 	});
 
 	$("#end").click(function (event){
@@ -48,11 +49,9 @@ $(document).ready(function () {
         if(obj.command == "HELO") {
             Server.send( "message", '{"command": "ANN", "message":{"id": '+obj.message.id+', "username":"BroodjeKaasPresentatie","pubkey":""}}' );
         }else if(obj.command == "MSG") {
-            var message = "Reciever: "+obj.reciever+" - Message: "+obj.message.text;
+            var message = "Reciever: "+obj.sender+" - Reciever: "+obj.reciever+" - Message: "+obj.message.text;
             $(".demoGroup").html = message + "<br />" + $(".demoGroup").html;
         }
-        alert(payload);
-        $(".demoGroup").html = payload + "<br />" + $(".demoGroup").html;
 	});
 
 	Server.connect();
