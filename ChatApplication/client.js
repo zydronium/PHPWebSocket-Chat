@@ -16,7 +16,7 @@ function updateLog() {
 }
 
 function log( text ) {
-	session.userlist[session.openchat].chat+=(session.userlist[session.openchat].chat?"\n":'')+text;
+	session.userlist[session.openchat].chat+=("\n"+text);
 	updateLog()
 }
 
@@ -32,9 +32,9 @@ function sendMessage ( text, userid ) {
 function connect() {
 	console.log('Connecting...');
 	//lokale server:
-	Server = new FancyWebSocket('ws://127.0.0.1:9300');
+	//Server = new FancyWebSocket('ws://127.0.0.1:9300');
 	//Jelle's server:
-	//Server = new FancyWebSocket('ws://chat.123apps.net:9300');
+	Server = new FancyWebSocket('ws://chat.123apps.net:9300');
 
 
 	$('#message').keypress(function(e) {
@@ -87,19 +87,24 @@ function connect() {
 		        $('#userlist .collection').append('<a href="#!" id="'+obj.message.id+'" class="collection-item userlist-user">'+obj.message.username+'</a>');
 		        break;
 		    case "MSG":
-				session.userlist[obj.sender].chat+=(session.userlist[obj.sender].chat?"\n":''+obj.message.text);
-				if(session.openchat !== obj.sender) {
+				console.log(obj.message.text);
+				console.log(session.userlist[obj.sender].chat);
+				session.userlist[obj.sender].chat+=("\n"+obj.message.text);
+				console.log(session.userlist[obj.sender].chat);
+				console.log("sender = " + obj.sender);
+				if(session.openchat != obj.sender) {
 					session.userlist[obj.sender].newmessages++;
-					console.log($('.new, .badge'));
-					if(typeof $('.new, .badge') !== "undefined" ) {
-						$('.new, .badge').text(session.userlist[obj.sender].newmessages);
+					if(typeof $('.badge').html() !== "undefined" ) {
+						$('.badge').text(session.userlist[obj.sender].newmessages);
 					} else {
 						console.log("make label");
 						$('.collection #'+obj.sender).html($('.collection #'+obj.sender).html() + '<span class="new badge">'+session.userlist[obj.sender].newmessages+'</span>');
 					}
+				} else {
+					updateLog();
 				}
-				console.log("message recieved!");
-				console.log(obj);
+				//console.log("message recieved!");
+				//console.log(obj);
 		        break;
 		    default:
 		        console.log("default");
