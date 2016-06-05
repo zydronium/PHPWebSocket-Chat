@@ -7,6 +7,15 @@ session.userlist[999] = {};
 session.userlist[999].chat="";
 var chatlogs = {};
 
+// The passphrase used to repeatably generate this RSA key.
+var PassPhrase = randString(20);
+
+// The length of the RSA key, in bits.
+var Bits = 512; 
+
+session.rsakey = cryptico.generateRSAKey(PassPhrase, Bits);
+session.pubkey = cryptico.publicKeyString(session.rsakey);
+
 function updateLog() {
 	$log = $('#log');
 	//Add text to log
@@ -26,6 +35,10 @@ function send( text ) {
 }
 
 function sendMessage ( text, userid ) {
+	if(session.encrypt == 1) {
+		var EncryptResult = cryptico.encrypt(text, session.userlist[userid].pubkey);
+		text = EncryptResult.cipher;
+	}
 	var message = '{"command": "MSG","sender": '+session.userid+',"reciever": '+userid+',"message":{"text":"'+text+'"}}';//2e userid moet reciever id worden, doorgegeven via userid param
 	send(message);
 }
@@ -92,14 +105,21 @@ function connect() {
 		        $('#userlist .collection').append('<a href="#!" id="'+obj.message.id+'" class="collection-item userlist-user">'+obj.message.username+'</a>');
 		        break;
 		    case "MSG":
+				var text = obj.message.text;
+				if(session.encrypt == 1) {
+					console.log("Cypto text: "+text);
+					console.log("private key: "+session.rsakey);
+					var DecryptResult = cryptico.decrypt(text, session.rsakey);
+					text = DecryptResult.plaintext;
+				}
 				console.log(obj.message.text);
 				console.log(session.userlist[obj.sender].chat);
-				session.userlist[obj.sender].chat+=(obj.message.text+"\n");
+				session.userlist[obj.sender].chat+=(text+"\n");
 				console.log(session.userlist[obj.sender].chat);
 				console.log("sender = " + obj.sender);
 				if(session.openchat != obj.sender) {
 					session.userlist[obj.sender].newmessages++;
-					if(typeof $('.badge').html() !== "undefined" ) {
+					if(typeof $('#'+obj.sender+' .badge').html() !== "undefined" ) {
 						$('.badge').text(session.userlist[obj.sender].newmessages);
 					} else {
 						console.log("make label");
@@ -111,6 +131,10 @@ function connect() {
 				//console.log("message recieved!");
 				//console.log(obj);
 		        break;
+			case "LOCK":
+				session.encrypt = obj.message.encryptStatus;
+				console.log("encrypt = "+session.encrypt);
+				break;
 		    default:
 		        console.log("default");
 		}
@@ -155,9 +179,18 @@ function login() {
 	$('#username').text(session.username);
 
 	//TODO generate pub key
-	session.pubkey = "";
-	session.privkey = "";
+	//session.pubkey = "";
+	//session.rsakey = "";
 
 	var message = '{"command": "ANN", "message":{"id": '+session.userid+', "username":"'+session.username+'","pubkey":"'+session.pubkey+'"}}';
 	send(message);
+}
+
+function randString(x){
+    var s = "";
+    while(s.length<x&&x>0){
+        var r = Math.random();
+        s+= (r<0.1?Math.floor(r*100):String.fromCharCode(Math.floor(r*26) + (r>0.5?97:65)));
+    }
+    return s;
 }
