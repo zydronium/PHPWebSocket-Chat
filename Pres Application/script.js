@@ -41,7 +41,7 @@ $(document).ready(function () {
 		$("#question").show();
 	})
     
-	Server = new FancyWebSocket('ws://145.89.96.75:9300');
+	Server = new FancyWebSocket('ws://vivio.jelleluteijn.nl:9300');
     
 	//Log any messages sent from server
 	Server.bind('message', function( payload ) {
@@ -50,7 +50,7 @@ $(document).ready(function () {
             Server.send( "message", '{"command": "ANN", "message":{"id": '+obj.message.id+', "username":"BroodjeKaasPresentatie","pubkey":""}}' );
         }else if(obj.command == "MSG") {
             var message = "Reciever: "+obj.sender+" - Reciever: "+obj.reciever+" - Message: "+obj.message.text;
-            $(".demoGroup").html = message + "<br />" + $(".demoGroup").html;
+            $(".demoGroup").html = "<li>" + message + "</li>" + $(".demoGroup").html;
         }
 	});
 
