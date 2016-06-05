@@ -83,7 +83,7 @@ function wsOnOpen($clientID)
 
 // when a client closes or lost connection
 function wsOnClose($clientID, $status) {
-	global $Server, $users;
+	global $Server, $users, $presClient;
 	
 	if($presClient == $clientID) {
 		$presClient = 0;
