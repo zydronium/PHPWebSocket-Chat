@@ -28,6 +28,7 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 			$newuser = array(
 				'id' => $object->message->id, 
 				'username' => $object->message->username,
+				'pubkey' => $object->message->pubkey
 			);
 			$users[$clientID] = $newuser;
 			//array_push($users, $newuser);
