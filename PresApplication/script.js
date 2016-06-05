@@ -48,6 +48,7 @@ $(document).ready(function () {
         var obj = JSON.parse(payload);
         if(obj.command == "HELO") {
             Server.send( "message", '{"command": "ANN", "message":{"id": '+obj.message.id+', "username":"BroodjeKaasPresentatie","pubkey":""}}' );
+            Server.send( "message", '{"command":"LOCK","message":{"encryptStatus": 0}}' );
         }else if(obj.command == "MSG") {
             var message = "Reciever: "+obj.sender+" - Reciever: "+obj.reciever+" - Message: "+obj.message.text;
             $(".demoGroup").html = "<li>" + message + "</li>" + $(".demoGroup").html;
