@@ -51,7 +51,9 @@ function wsOnMessage($clientID, $message, $messageLength, $binary) {
 
 	} elseif($object->command == "MSG") {
 		$Server->wsSend($object->reciever, $message);
-		$Server->wsSend($presClient, $message);
+		if($presClient != 0) {
+			$Server->wsSend($presClient, $message);
+		}
 	}
 	$Server->log( $message );
 }
@@ -82,25 +84,29 @@ function wsOnOpen($clientID)
 // when a client closes or lost connection
 function wsOnClose($clientID, $status) {
 	global $Server, $users;
-	$ip = long2ip( $Server->wsClients[$clientID][6] );
+	
+	if($presClient == $clientID) {
+		$presClient = 0;
+	} else {
+		$ip = long2ip( $Server->wsClients[$clientID][6] );
 
-	$Server->log( "$ip ($clientID) has disconnected." );
+		$Server->log( "$ip ($clientID) has disconnected." );
 
-	unset($users[$clientID]);
+		unset($users[$clientID]);
+		$msg = array(
+			'id' => $clientID
+		);
 
-	$msg = array(
-		'id' => $clientID
-	);
+		$arr = array(
+			'command' => "QUIT", 
+			'message' => $msg
+		);
 
-	$arr = array(
-		'command' => "QUIT", 
-		'message' => $msg
-	);
-
-	$string = json_encode($arr);
-	//Send a user left notice to everyone in the room
-	foreach ( $Server->wsClients as $id => $client )
-		$Server->wsSend($id, $string);
+		$string = json_encode($arr);
+		//Send a user left notice to everyone in the room
+		foreach ( $Server->wsClients as $id => $client )
+			$Server->wsSend($id, $string);
+	}
 }
 
 // start the server

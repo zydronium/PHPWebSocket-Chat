@@ -31,7 +31,11 @@ function sendMessage ( text, userid ) {
 
 function connect() {
 	console.log('Connecting...');
+	//lokale server:
 	Server = new FancyWebSocket('ws://127.0.0.1:9300');
+	//Jelle's server:
+	//Server = new FancyWebSocket('ws://chat.123apps.net:9300');
+
 
 	$('#message').keypress(function(e) {
 		if ( e.keyCode == 13 && this.value ) {
@@ -88,6 +92,7 @@ function connect() {
 				if(session.openchat !== obj.sender) {
 					session.userlist[obj.sender].newmessages++;
 				}
+				$('#reciever').text = session.userlist[obj.sender].username
 		        break;
 		    default:
 		        console.log("default");
@@ -120,7 +125,7 @@ $(document).ready(function() {
 		session.openchat = $(this).attr("id");
 		updateLog();
 		console.log("chat="+session.userlist[session.openchat].chat);
-		session.userlist[$(this).attr("id")].newmessages = 0;
+		session.userlist[session.openchat].newmessages = 0;
 	});
 });
 
