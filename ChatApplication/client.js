@@ -10,7 +10,7 @@ var chatlogs = {};
 function updateLog() {
 	$log = $('#log');
 	//Add text to log
-	$log.append(session.userlist[session.openchat].chat);
+	$log.val(session.userlist[session.openchat].chat);
 	//Autoscroll
 	$log[0].scrollTop = $log[0].scrollHeight - $log[0].clientHeight;
 }
@@ -40,7 +40,7 @@ function connect() {
 	$('#message').keypress(function(e) {
 		if ( e.keyCode == 13 && this.value ) {
 			log( 'You: ' + this.value );
-			sendMessage( this.value, session.openchat );
+			sendMessage( session.username + ': ' + this.value, session.openchat );
 
 			$(this).val('');
 		}
@@ -87,12 +87,19 @@ function connect() {
 		        $('#userlist .collection').append('<a href="#!" id="'+obj.message.id+'" class="collection-item userlist-user">'+obj.message.username+'</a>');
 		        break;
 		    case "MSG":
-				chat = session.userlist[obj.sender].chat;
-				chat+=(chat?"\n":''+obj.message.text);
+				session.userlist[obj.sender].chat+=(session.userlist[obj.sender].chat?"\n":''+obj.message.text);
 				if(session.openchat !== obj.sender) {
 					session.userlist[obj.sender].newmessages++;
+					console.log($('.new, .badge'));
+					if(typeof $('.new, .badge') !== "undefined" ) {
+						$('.new, .badge').text(session.userlist[obj.sender].newmessages);
+					} else {
+						console.log("make label");
+						$('.collection #'+obj.sender).html($('.collection #'+obj.sender).html() + '<span class="new badge">'+session.userlist[obj.sender].newmessages+'</span>');
+					}
 				}
-				$('#reciever').text = session.userlist[obj.sender].username
+				console.log("message recieved!");
+				console.log(obj);
 		        break;
 		    default:
 		        console.log("default");
@@ -118,14 +125,18 @@ $(document).ready(function() {
 	});
 	//switch chats
 	$('#userlist .collection').on("click", ".userlist-user", function(evt) {
+		if(session.openchat === 999) {
+			$('#message').removeAttr("disabled");
+		}
 		console.log($(this).attr("id"));
 		$('#userlist .collection .userlist-user').removeClass("active");
 		$(this).addClass("active");
 		
 		session.openchat = $(this).attr("id");
 		updateLog();
-		console.log("chat="+session.userlist[session.openchat].chat);
 		session.userlist[session.openchat].newmessages = 0;
+		$('.collection #'+session.openchat).html(session.userlist[session.openchat].username);
+		$('#reciever').text(session.userlist[session.openchat].username);
 	});
 });
 
